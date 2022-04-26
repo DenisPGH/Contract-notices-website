@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Notices here:</h2>
+<div>
+    {% for a in profiles %}
+        <li> {{ a.date }}</li>
+        <li> {{ a.tender_name }}</li>
+    {% endfor %}
+    {% csrf_token %}
+</div>
+
+</body>
+</html>
