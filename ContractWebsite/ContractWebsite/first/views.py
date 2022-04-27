@@ -23,7 +23,7 @@ class AllNoticeView(APIView):
 
     def get(self, request):
         queryset = Notice.objects.all()
-        return Response({'profiles': queryset})
+        return Response({'notices': queryset})
 
     # def get(self, request, format=None):
     #     """

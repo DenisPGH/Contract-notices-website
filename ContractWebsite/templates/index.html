@@ -6,12 +6,34 @@
 </head>
 <body>
 <h2>Notices here:</h2>
+
 <div>
-    {% for a in profiles %}
-        <li> {{ a.date }}</li>
-        <li> {{ a.tender_name }}</li>
+    <table>
+    <tr>
+        <th>Date</th>
+        <th>Tender name</th>
+        <th>Notice number</th>
+        <th>Procedure state</th>
+        <th>Contract type</th>
+        <th>Type of procurement</th>
+        <th>Estimated value</th>
+    </tr>
+    {%  for each in notices %}
+        <tr>
+
+            <th>{{ each.date}}</th>
+            <th>{{ each.tender_name }}</th>
+            <td>{{ each.notice_number }}</td>
+            <td>{{ each.procedure_state }}</td>
+            <td>{{ each.contract_type }}</td>
+            <td>{{ each.type_of_procurement }}</td>
+            <td>{{ each.estimated_value }}</td>
+
+        </tr>
+
     {% endfor %}
-    {% csrf_token %}
+</table>
+
 </div>
 
 </body>

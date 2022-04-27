@@ -15,7 +15,8 @@ class Notice(models.Model):
         max_length=NOTICE_NUMBER_MAX_LENGHT
     )
     tender_name=models.CharField(
-        max_length=TENDER_NAME_NUMBER_MAX_LENGHT
+        unique=True,
+        max_length=TENDER_NAME_NUMBER_MAX_LENGHT,
     )
     procedure_state=models.CharField(
         max_length=STATE_MAX_LENGHT
