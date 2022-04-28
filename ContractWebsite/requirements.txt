@@ -8,6 +8,7 @@ constantly==15.1.0
 cryptography==37.0.0
 cssselect==1.1.0
 Django==4.0.4
+django-filter==21.1
 djangorestframework==3.13.1
 filelock==3.6.0
 hyperlink==21.0.0
