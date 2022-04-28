@@ -45,6 +45,7 @@ OTHER_APPS= [
     'django_filters',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+    'rest_framework.authtoken'
 
 ]
 INSTALLED_APPS= DJANGO_APPS+ OTHER_APPS
@@ -134,7 +135,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
 }
 LOGOUT_REDIRECT_URL='index'
 

@@ -10,6 +10,8 @@ from django import forms
 from django_filters import filters as filters_django
 import datetime
 from bootstrap_datepicker_plus.widgets import DatePickerInput
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -123,5 +125,16 @@ class NoticeListView(api_views.ListAPIView):
             query=Notice.objects.all()
         return query
 
+
+class ExampleView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        content = {
+            'user': str(request.user),  # `django.contrib.auth.User` instance.
+            'auth': str(request.auth),  # None
+        }
+        return Response(content)
 
 
