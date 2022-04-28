@@ -41,14 +41,14 @@ DJANGO_APPS = [
 OTHER_APPS= [
     'ContractWebsite.first',
     'ContractWebsite.visual',
-    'rest_framework',
-    'django_filters',
     'bootstrap4',
     'bootstrap_datepicker_plus',
-    'rest_framework.authtoken'
-
 ]
-INSTALLED_APPS= DJANGO_APPS+ OTHER_APPS
+REST_APPS=['rest_framework',
+           'django_filters',
+           'rest_framework.authtoken']
+
+INSTALLED_APPS= DJANGO_APPS+ OTHER_APPS+REST_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,7 +139,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
 }
 LOGOUT_REDIRECT_URL='index'
 
