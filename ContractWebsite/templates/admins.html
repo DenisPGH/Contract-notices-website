@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>admins</title>
+</head>
+<body>
+<div>
+    <h2>
+        ALL USERS:
+    </h2>
+</div>
+<div>
+    <table>
+    <tr>
+        <th>ID</th>
+        <th>USERNAME</th>
+        <th>Superuser</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Password</th>
+        <th>Email</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    {%  for each in users %}
+        <tr>
+
+            <th>{{ each.id}}</th>
+            <th>{{ each.username }}</th>
+            <th>{{ each.is_superuser}}</th>
+            <td>{{ each.first_name }}</td>
+            <td>{{ each.last_name }}</td>
+            <td>**********</td>
+            <td>{{ each.email }}</td>
+            <td>
+                <form class="edit" method='get' action="{% url 'edit user' each.id %}">
+                    <button class="edit"> edit </button>
+                    {% csrf_token %}
+                </form>
+
+            </td>
+            <td>
+                <form class="adm" method='post' action="{% url 'delete user' each.id %}">
+{#                <form class="adm" method='get' action="#">#}
+                    <button class="regi"> delete </button>
+                    {% csrf_token %}
+                </form>
+            </td>
+
+        </tr>
+
+    {% endfor %}
+</table>
+
+</div>
+<div>
+    <form class="back" method='get' action="{% url 'logged' %}">
+                    <button class="back"> back </button>
+                    {% csrf_token %}
+                </form>
+</div>
+
+</body>
+</html>

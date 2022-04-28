@@ -14,10 +14,12 @@
                 <button class="login">LOGIN</button>
                 {% csrf_token %}
             </form>
+        <div>
             <form method="post" action="{% url 'register' %}">
                 <button class="button">Registration </button>
                 {% csrf_token %}
             </form>
+        </div>
 </div>
 
 </body>

@@ -46,7 +46,8 @@ OTHER_APPS= [
 ]
 REST_APPS=['rest_framework',
            'django_filters',
-           'rest_framework.authtoken']
+           'rest_framework.authtoken'
+           ]
 
 INSTALLED_APPS= DJANGO_APPS+ OTHER_APPS+REST_APPS
 
@@ -137,11 +138,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }
-LOGOUT_REDIRECT_URL='index'
+LOGOUT_REDIRECT_URL='logout'
 

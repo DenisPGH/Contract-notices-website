@@ -1,12 +1,21 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 from django.contrib.auth import forms as auth_forms, get_user_model
 from django import forms
+from django.contrib.auth import mixins as auth_mixin
+
+
+
+
+
+
 
 
 # Create your views here.
+UserModel=get_user_model()
 
 class CreateNewUserForm(auth_forms.UserCreationForm):
 
@@ -39,22 +48,53 @@ class CreateNewUserForm(auth_forms.UserCreationForm):
     #     return user
 
     class Meta:
-        model = get_user_model()
+        model = UserModel
         fields = ('username','first_name', 'last_name','password1', 'password2', )
 
 
 class ViewPage(views.TemplateView):
     template_name = 'index_a.html'
 
+class LogedPage(views.TemplateView):
+
+    template_name = 'loged.html'
+    #url = reverse_lazy('logged')
+
+class AdminsPage(auth_mixin.LoginRequiredMixin,views.TemplateView):
+    template_name = 'admins.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = UserModel.objects.all()
+        return context
+
+class EditUsers(auth_mixin.LoginRequiredMixin,views.edit.UpdateView):
+    template_name = 'edit_user.html'
+    model = UserModel
+    fields = "__all__"
+    success_url = reverse_lazy('admins')
+
 
 class MyLoginView(LoginView):
     template_name = 'index_a.html'
     def get_success_url(self):
-        return reverse_lazy('filter')
+        return reverse_lazy('logged')
+
 class LogoutPageView(LogoutView):
     def get_success_url(self):
         return reverse_lazy('index_a')
+
+
 class RegistrationView(views.CreateView):
     form_class = CreateNewUserForm
     template_name = 'register.html'
-    success_url = reverse_lazy('filter')
+    success_url = reverse_lazy('logged')
+
+@login_required()
+def delete_user(request,pk):
+    user_for_delete=UserModel.objects.get(id=pk)
+    user_for_delete.delete()
+    return redirect('admins')
+
+class Back(auth_mixin.LoginRequiredMixin,views.TemplateView):
+    template_name = 'index_a.html'
+    #url = reverse_lazy('admins')

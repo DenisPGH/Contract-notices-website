@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+     <form class="adm" method='get' action="{% url 'back' %}">
+         <button class="regi"> Back</button>
+            {% csrf_token %}
+        </form>
+        </div>
+    <h2>
+        Would like to enter my application?
+    </h2>
+</div>
+<div>
+        <form class="app" method='get' action="{% url 'filter' %}">
+         <button class="regi"> To application</button>
+            {% csrf_token %}
+
+        </form>
+    </div>
+    {% if user.is_superuser %}
+    <div>
+
+        <form class="adm" method='get' action="{% url 'admins' %}">
+         <button class="regi"> for admins</button>
+            {% csrf_token %}
+        </form>
+        </div>
+    {% endif %}
+
+
+
+</body>
+</html>
