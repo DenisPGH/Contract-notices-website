@@ -1,6 +1,7 @@
 asgiref==3.5.0
 attrs==21.4.0
 Automat==20.2.0
+beautifulsoup4==4.11.1
 certifi==2021.10.8
 cffi==1.15.0
 charset-normalizer==2.0.12
@@ -8,6 +9,8 @@ constantly==15.1.0
 cryptography==37.0.0
 cssselect==1.1.0
 Django==4.0.4
+django-bootstrap-datepicker-plus==4.0.0
+django-bootstrap4==22.1
 django-filter==21.1
 djangorestframework==3.13.1
 filelock==3.6.0
@@ -32,6 +35,7 @@ requests-file==1.5.1
 Scrapy==2.6.1
 service-identity==21.1.0
 six==1.16.0
+soupsieve==2.3.2.post1
 sqlparse==0.4.2
 tldextract==3.2.1
 Twisted==22.4.0

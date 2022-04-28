@@ -10,7 +10,9 @@ class Notice(models.Model):
     TYPE_PROCUREMENT_MAX_LENGHT=40
 
 
-    date=models.DateTimeField()
+    date=models.DateField(
+
+    )
     notice_number=models.CharField(
         max_length=NOTICE_NUMBER_MAX_LENGHT
     )

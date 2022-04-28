@@ -2,11 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Index</title>
 </head>
 <body>
 <div>
-    <h2> AAAAAAA</h2>
+    <h2> Website for extract data:</h2>
+</div>
+<div>
+    <form class="login" method='post' action="{% url 'index' %}">
+                {{ form }}
+                <button class="login">LOGIN</button>
+                {% csrf_token %}
+            </form>
+            <form method="post" action="{% url 'register' %}">
+                <button class="button">Registration </button>
+                {% csrf_token %}
+            </form>
 </div>
 
 </body>

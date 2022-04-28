@@ -43,6 +43,9 @@ OTHER_APPS= [
     'ContractWebsite.visual',
     'rest_framework',
     'django_filters',
+    'bootstrap4',
+    'bootstrap_datepicker_plus',
+
 ]
 INSTALLED_APPS= DJANGO_APPS+ OTHER_APPS
 
@@ -133,4 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+LOGOUT_REDIRECT_URL='index'
 
