@@ -2,6 +2,7 @@ import json
 
 import scrapy
 from  scrapy import FormRequest
+from ..items import  NoticeItem
 
 
 # class NoticesSpider(scrapy.Spider):
@@ -206,6 +207,9 @@ from  scrapy import FormRequest
 
 """ 30.04.2022"""
 
+
+
+
 class NoticeSpider(scrapy.Spider):
     name = "notices"
     start_urls = ["http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1"]
@@ -229,7 +233,8 @@ class NoticeSpider(scrapy.Spider):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
     }
     headers = {
-        'Content-Type': 'application/json; charset=UTF-8',
+        #'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/x-www-form-urlencoded',
 
     }
     def parse(self,response,**kwargs):
@@ -241,7 +246,7 @@ class NoticeSpider(scrapy.Spider):
             "pageIndex": 0
         }
 
-        requeste=scrapy.Request(url=' http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/',
+        request=scrapy.Request(url=' http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/',
                        method='POST',
                        callback=self.parse,
                        headers=self.headers,
@@ -249,10 +254,47 @@ class NoticeSpider(scrapy.Spider):
                        )
 
 
-        print(f"deni====={response.headers.getlist('Content-Type')}")
-        print(f"denislav====={response.css('.ng-binding')}")
+        print(f"Content type====={response.headers.getlist('Content-Type')}")
+        print(f"CSS====={response.css('.ng-binding')}")
         print(f"STATUS====={response.status}")
+        print(f"===META====={response.meta}")
+        print(f"===CB====={response.cb_kwargs}")
+        print(f"===HEADERS====={response.headers}")
+        print(f"===FLAGS====={response.flags}")
+        print(f"===URL====={response.url}")
+        print(f"===protocol====={response.protocol}")
         print(f"===BODY====={response.text}")
+
+
+
+
+
+
+class TestSpider(scrapy.Spider):
+    name = 'test'
+    # allowed_domains = ['https://quotes.toscrape.com/']
+    start_urls = ['https://quotes.toscrape.com/']
+
+    def parse(self, response,**kwargs):
+        # creating items dictionary
+        items = NoticeItem()
+        items['name']=['DENISLAV',]
+
+
+        # this is selected by pressing ctrl+f in console
+        # and selecting the appropriate rule of Xpath
+        Notice_all = response.xpath('//div/div/div/span[1]')
+
+
+        # These paths are based on the selectors
+
+        for single_notice in Notice_all:  # extracting data
+            items['Notice'] = single_notice.css('::text').extract()
+            yield items
+        # calling pipelines components for further
+        # processing.
+
+
 
 
 

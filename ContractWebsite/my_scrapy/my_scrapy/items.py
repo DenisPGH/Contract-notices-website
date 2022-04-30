@@ -6,7 +6,15 @@
 import scrapy
 
 
-class MyScrapyItem(scrapy.Item):
+# class MyScrapyItem(scrapy.Item):
+#     # define the fields for your item here like:
+#     # name = scrapy.Field()
+#     pass
+
+class NoticeItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+
+    # only one field that it of Quote.
+    Notice = scrapy.Field()
+    name = scrapy.Field()
