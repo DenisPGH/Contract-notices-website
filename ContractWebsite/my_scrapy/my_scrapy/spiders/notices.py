@@ -299,26 +299,28 @@ class TestSpider(scrapy.Spider):
         # These paths are based on the selectors
 
         for single_notice in Notice_all:  # extracting data
+            data=[['2022-04-30'],['a'],[f"deni{random.randint(0,10)}"],["c"],['d'],['e'],[20],['g']]
+
             items['Notice'] = single_notice.css('::text').extract()
-            items['date'] = ['2022-04-30',]
-            items['notice_number']=['a']
-            items['tender_name']=['b']
-            items['procedure_state']=['c']
-            items['contract_type']=['d']
-            items['type_of_procurement']=['e']
-            items['estimated_value']=['f']
+            items['date'] = data[0]
+            items['notice_number']=data[1]
+            items['tender_name']=data[2]
+            items['procedure_state']=data[3]
+            items['contract_type']=data[4]
+            items['type_of_procurement']=data[5]
+            items['estimated_value']=data[6]
 
             # if not in db django store it!!!!
-            name_of_notice=f"deni{random.randint(0,10)}"
-            if name_of_notice not in N.objects.values_list('tender_name', flat=True).distinct():
+
+            if data[2][0] not in N.objects.values_list('tender_name', flat=True).distinct():
                 new_notice = N(
-                    date='2022-04-30',
-                    notice_number='b',
-                    tender_name=name_of_notice,
-                    procedure_state='d',
-                    contract_type='e',
-                    type_of_procurement='f',
-                    estimated_value=20,
+                    date=data[0][0],
+                    notice_number=data[1][0],
+                    tender_name=data[2][0],
+                    procedure_state=data[3][0],
+                    contract_type=data[4][0],
+                    type_of_procurement=data[5][0],
+                    estimated_value=data[6][0],
                 )
                 new_notice.save()
             yield items
