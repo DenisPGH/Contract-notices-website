@@ -1,7 +1,7 @@
 from django.urls import path
 
 from ContractWebsite.visual.views import MyLoginView, RegistrationView, LogedPage, AdminsPage, delete_user, Back, \
-    LogoutPageView, EditUsers
+    LogoutPageView, EditUsers, my_crawl_scrapy
 
 urlpatterns=(
     path('',MyLoginView.as_view(),name="index"),
@@ -12,4 +12,5 @@ urlpatterns=(
     path("back/",Back.as_view(), name="back"),
     path("logout/",LogoutPageView.as_view(), name="logout"),
     path("edit/<int:pk>/",EditUsers.as_view(), name="edit user"),
+    path("crawl/",my_crawl_scrapy, name="crawl"),
 )

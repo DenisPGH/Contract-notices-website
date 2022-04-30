@@ -7,6 +7,11 @@ from django.contrib.auth import forms as auth_forms, get_user_model
 from django import forms
 from django.contrib.auth import mixins as auth_mixin
 
+from scrapy.crawler import CrawlerProcess
+from my_scrapy.my_scrapy.spiders.notices import TestSpider
+import platform as plt
+import os
+
 
 
 
@@ -101,3 +106,14 @@ def delete_user(request,pk):
 class Back(auth_mixin.LoginRequiredMixin,views.TemplateView):
     template_name = 'index_a.html'
     #url = reverse_lazy('admins')
+
+
+def my_crawl_scrapy(request):
+    """ this function start crawling"""
+    # process = CrawlerProcess()
+    # process.crawl(TestSpider)
+    # process.start()
+    print('start scrapy function')
+    cwd = os.path.join("C:\\Users\\Owner\\Desktop\\Test-Website\\Contract-notices-website\\ContractWebsite\\my_scrapy\\my_scrapy", "start.py")
+    os.system('{} {}'.format('python', cwd))
+    return redirect('admins')
