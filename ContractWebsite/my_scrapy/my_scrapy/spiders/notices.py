@@ -152,55 +152,107 @@ from  scrapy import FormRequest
 
 
 
+# class NoticeSpider(scrapy.Spider):
+#     name = "notices"
+#     start_urls = ["http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1"]
+#     headers = {
+#     'Accept': 'application / json, text / plain, * / *',
+#     'Accept - Encoding': 'gzip, deflate',
+#     'Accept - Language': 'en - US, en;q = 0.9',
+#     'Authorization': 'Bearer null',
+#     'Cache - Control': 'no - cache',
+#     'Connection': 'keep - alive',
+#     'Content - Length': '101',
+#     'Content - Type': 'application / json;charset = UTF - 8',
+#    ' Cookie': 'culture = en - US;isCompact = true;_HttpSessionID = 5BF1B10EBD394BD8B5B99ED472BD854E;sysNoticeTypeIds = null',
+#     'Culture': 'en - US',
+#     'Host': 'www.e - licitatie.ro',
+#     'HttpSessionID': 'null',
+#     'Origin': 'http: // www.e - licitatie.ro',
+#     'Pragma': 'no - cache',
+#     'Referer': 'http: // www.e - licitatie.ro / pub / notices / contract - notices / list / 2 / 1RefreshToken: null',
+#     'User - Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
+#     }
+#
+#     def parse(self, response,**kwargs):
+#         yield scrapy.Request(
+#             url="http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/",
+#             callback=self.parse,
+#             headers=self.headers
+#         )
+#
+#     # def parse_json(self, response):
+#     #     data = response.json() # Newer version of Scrapy come with shortcut to get JSON data
+#     #
+#     #     for i,school in enumerate(data):
+#     #         school_code = school["itSchoolCode"]
+#     #         yield scrapy.Request(
+#     #             f"https://directory.ntschools.net/api/System/GetSchool?itSchoolCode={school_code}",
+#     #             callback=self.parse_school,
+#     #             headers=self.headers,
+#     #             dont_filter=True # Many schools have the same code, same page, but listed more than once
+#     #         )
+#
+#     # def parse_school(self, response):
+#     #     data = response.json() # Newer version of Scrapy come with shortcut to get JSON data
+#     #     yield {
+#     #         "name": data["name"],
+#     #         "telephoneNumber": data["telephoneNumber"],
+#     #         "mail": data["mail"],
+#     #         "physicalAddress": data["physicalAddress"]["displayAddress"],
+#     #         "postalAddress": data["postalAddress"]["displayAddress"],
+#     #     }
+
+
+""" 30.04.2022"""
+
 class NoticeSpider(scrapy.Spider):
     name = "notices"
     start_urls = ["http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1"]
-    headers = {
-    'Accept': 'application / json, text / plain, * / *',
-    'Accept - Encoding': 'gzip, deflate',
-    'Accept - Language': 'en - US, en;q = 0.9',
-    'Authorization': 'Bearer null',
-    'Cache - Control': 'no - cache',
-    'Connection': 'keep - alive',
-    'Content - Length': '101',
-    'Content - Type': 'application / json;charset = UTF - 8',
-   ' Cookie': 'culture = en - US;isCompact = true;_HttpSessionID = 5BF1B10EBD394BD8B5B99ED472BD854E;sysNoticeTypeIds = null',
-    'Culture': 'en - US',
-    'Host': 'www.e - licitatie.ro',
-    'HttpSessionID': 'null',
-    'Origin': 'http: // www.e - licitatie.ro',
-    'Pragma': 'no - cache',
-    'Referer': 'http: // www.e - licitatie.ro / pub / notices / contract - notices / list / 2 / 1RefreshToken: null',
-    'User - Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
+    #start_urls = [" http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/"]
+    hheaders = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Authorization': 'Bearer null',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Content-Length': '101',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Cookie': 'culture=en-US; isCompact=true; _HttpSessionID=5BF1B10EBD394BD8B5B99ED472BD854E; sysNoticeTypeIds=null',
+        'Culture': 'en-US',
+        'Host': 'www.e-licitatie.ro',
+        'HttpSessionID': 'null',
+        'Origin': 'http://www.e-licitatie.ro',
+        'Pragma': 'no-cache',
+        'Referer': 'http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1RefreshToken: null',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
     }
+    headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
 
-    def parse(self, response,**kwargs):
-        yield scrapy.Request(
-            url="http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/",
-            callback=self.parse,
-            headers=self.headers
-        )
+    }
+    def parse(self,response,**kwargs):
+        PAYLOAD={
+            "sysNoticeTypeIds": [],
+            "sortProperties": [],
+            "pageSize": 100,
+            "hasUnansweredQuestions": False,
+            "pageIndex": 0
+        }
 
-    # def parse_json(self, response):
-    #     data = response.json() # Newer version of Scrapy come with shortcut to get JSON data
-    #
-    #     for i,school in enumerate(data):
-    #         school_code = school["itSchoolCode"]
-    #         yield scrapy.Request(
-    #             f"https://directory.ntschools.net/api/System/GetSchool?itSchoolCode={school_code}",
-    #             callback=self.parse_school,
-    #             headers=self.headers,
-    #             dont_filter=True # Many schools have the same code, same page, but listed more than once
-    #         )
+        requeste=scrapy.Request(url=' http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/',
+                       method='POST',
+                       callback=self.parse,
+                       headers=self.headers,
+                       body=json.dumps(PAYLOAD),
+                       )
 
-    # def parse_school(self, response):
-    #     data = response.json() # Newer version of Scrapy come with shortcut to get JSON data
-    #     yield {
-    #         "name": data["name"],
-    #         "telephoneNumber": data["telephoneNumber"],
-    #         "mail": data["mail"],
-    #         "physicalAddress": data["physicalAddress"]["displayAddress"],
-    #         "postalAddress": data["postalAddress"]["displayAddress"],
-    #     }
+
+        print(f"deni====={response.headers.getlist('Content-Type')}")
+        print(f"denislav====={response.css('.ng-binding')}")
+        print(f"STATUS====={response.status}")
+        print(f"===BODY====={response.text}")
+
 
 
