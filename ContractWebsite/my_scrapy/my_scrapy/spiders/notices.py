@@ -1,4 +1,5 @@
 import json
+import random
 
 import scrapy
 from  scrapy import FormRequest
@@ -6,6 +7,7 @@ from ..items import  NoticeItem
 
 import os
 import sys
+sys.path.insert(0, 'C:\\Users\\Owner\\Desktop\\Test-Website\\Contract-notices-website\\ContractWebsite')
 #os.environ['DJANGO_SETTINGS_MODULE'] = 'ContractWebsite.settings'
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ContractWebsite.settings')
 import django
@@ -307,7 +309,7 @@ class TestSpider(scrapy.Spider):
             items['estimated_value']=['f']
 
             # if not in db django store it!!!!
-            name_of_notice="a"
+            name_of_notice=f"deni{random.randint(0,10)}"
             if name_of_notice not in N.objects.values_list('tender_name', flat=True).distinct():
                 new_notice = N(
                     date='2022-04-30',
@@ -316,7 +318,7 @@ class TestSpider(scrapy.Spider):
                     procedure_state='d',
                     contract_type='e',
                     type_of_procurement='f',
-                    estimated_value='g',
+                    estimated_value=20,
                 )
                 new_notice.save()
             yield items
