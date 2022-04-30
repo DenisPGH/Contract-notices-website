@@ -42,7 +42,9 @@ class MyScrapyPipeline(object):
     def create_table(self):
         self.curr.execute("""DROP TABLE IF EXISTS noticetable""")
         self.curr.execute("""create table noticetable(
-						Notice text
+						Notice text,
+						Name text
+						
 						)""")
 
     # store items to databases.
@@ -52,11 +54,15 @@ class MyScrapyPipeline(object):
 
     def putitemsintable(self, item):
         # extracting item and adding to table using SQL commands.
-        self.curr.execute("""insert into noticetable values (?)""", (
+        self.curr.execute("""insert into noticetable values (?,?)""", (
             item['Notice'][0],
+            item['Name'][0],
+
         ))
-        self.curr.execute("""insert into noticetable values (?)""", (
-            item['name'][0],
-        ))
+
         self.conn.commit()  # closing the connection.
+
+
+
+
 

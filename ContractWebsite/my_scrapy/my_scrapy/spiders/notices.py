@@ -278,7 +278,7 @@ class TestSpider(scrapy.Spider):
     def parse(self, response,**kwargs):
         # creating items dictionary
         items = NoticeItem()
-        items['name']=['DENISLAV',]
+
 
 
         # this is selected by pressing ctrl+f in console
@@ -286,11 +286,14 @@ class TestSpider(scrapy.Spider):
         Notice_all = response.xpath('//div/div/div/span[1]')
 
 
+
         # These paths are based on the selectors
 
         for single_notice in Notice_all:  # extracting data
             items['Notice'] = single_notice.css('::text').extract()
+            items['Name'] = single_notice.css('::text').extract()
             yield items
+
         # calling pipelines components for further
         # processing.
 

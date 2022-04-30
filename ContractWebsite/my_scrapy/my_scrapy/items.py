@@ -17,4 +17,4 @@ class NoticeItem(scrapy.Item):
 
     # only one field that it of Quote.
     Notice = scrapy.Field()
-    name = scrapy.Field()
+    Name = scrapy.Field()
