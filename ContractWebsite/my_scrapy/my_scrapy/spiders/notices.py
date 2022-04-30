@@ -4,6 +4,18 @@ import scrapy
 from  scrapy import FormRequest
 from ..items import  NoticeItem
 
+import os
+import sys
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'ContractWebsite.settings'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ContractWebsite.settings')
+import django
+django.setup()
+
+
+from ContractWebsite.first.models import Notice as N
+
+
+
 
 # class NoticesSpider(scrapy.Spider):
 #     #user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36"
@@ -278,20 +290,35 @@ class TestSpider(scrapy.Spider):
     def parse(self, response,**kwargs):
         # creating items dictionary
         items = NoticeItem()
-
-
-
         # this is selected by pressing ctrl+f in console
         # and selecting the appropriate rule of Xpath
         Notice_all = response.xpath('//div/div/div/span[1]')
-
-
 
         # These paths are based on the selectors
 
         for single_notice in Notice_all:  # extracting data
             items['Notice'] = single_notice.css('::text').extract()
-            items['Name'] = single_notice.css('::text').extract()
+            items['date'] = ['2022-04-30',]
+            items['notice_number']=['a']
+            items['tender_name']=['b']
+            items['procedure_state']=['c']
+            items['contract_type']=['d']
+            items['type_of_procurement']=['e']
+            items['estimated_value']=['f']
+
+            # if not in db django store it!!!!
+            name_of_notice="a"
+            if name_of_notice not in N.objects.values_list('tender_name', flat=True).distinct():
+                new_notice = N(
+                    date='2022-04-30',
+                    notice_number='b',
+                    tender_name=name_of_notice,
+                    procedure_state='d',
+                    contract_type='e',
+                    type_of_procurement='f',
+                    estimated_value='g',
+                )
+                new_notice.save()
             yield items
 
         # calling pipelines components for further

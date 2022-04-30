@@ -15,6 +15,8 @@ from django.contrib.auth import mixins as auth_mixin
 
 
 # Create your views here.
+from ContractWebsite.first.models import Notice
+
 UserModel=get_user_model()
 
 class CreateNewUserForm(auth_forms.UserCreationForm):
@@ -65,6 +67,7 @@ class AdminsPage(auth_mixin.LoginRequiredMixin,views.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['users'] = UserModel.objects.all()
+        context['each_notice'] = Notice.objects.values_list('date', flat=True).distinct()
         return context
 
 class EditUsers(auth_mixin.LoginRequiredMixin,views.edit.UpdateView):

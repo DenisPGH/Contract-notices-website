@@ -43,6 +43,7 @@ class FormSearch(forms.ModelForm):
 
 
 class InfoOneNoticeSerializer(serializers.ModelSerializer):
+    """show the date from the db"""
 
     class Meta:
         model = Notice
