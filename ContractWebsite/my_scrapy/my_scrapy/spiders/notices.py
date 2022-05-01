@@ -254,7 +254,7 @@ class NoticeSpider(scrapy.Spider):
 
     }
     def parse(self,response,**kwargs):
-        last_time_request=DateModel.objects.all().last()
+        last_time_request=DateModel.objects.all().last() # got the last gived data period for use in crawl
 
         # PAYLOAD={
         #     "sysNoticeTypeIds": [],
@@ -302,6 +302,7 @@ class NoticeSpider(scrapy.Spider):
 
 
 class TestSpider(scrapy.Spider):
+    """ Test spider for crawling from test url"""
     name = 'test'
     # allowed_domains = ['https://quotes.toscrape.com/']
     start_urls = ['https://quotes.toscrape.com/']

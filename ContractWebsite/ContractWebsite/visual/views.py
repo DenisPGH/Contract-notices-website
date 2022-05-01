@@ -17,12 +17,6 @@ import os
 
 
 
-
-
-
-
-
-
 # Create your views here.
 from ContractWebsite.first.models import Notice
 
@@ -134,10 +128,10 @@ class Back(auth_mixin.LoginRequiredMixin,views.TemplateView):
 
 
 def my_crawl_scrapy(request):
-    """ this function start crawling"""
-    # process = CrawlerProcess()
-    # process.crawl(TestSpider)
-    # process.start()
+    """
+     this function start crawling ==> now it is test website
+     have to be NoticesSpider(change the name in start.py)
+     """
     print('start scrapy function')
     cwd = os.path.join("C:\\Users\\Owner\\Desktop\\Test-Website\\Contract-notices-website\\ContractWebsite\\my_scrapy\\my_scrapy", "start.py")
     os.system('{} {}'.format('python', cwd))
