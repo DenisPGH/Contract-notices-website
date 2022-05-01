@@ -1,8 +1,7 @@
 from django import forms
 
-from ContractWebsite.first.models import Notice
+
 from ContractWebsite.visual.models import DateModel
-import datetime
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 
 

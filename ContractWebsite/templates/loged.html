@@ -1,9 +1,18 @@
-
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .crawl {
+            width: 30%;
+
+        }
+    </style>
 </head>
 <body>
 <div>
@@ -26,6 +35,7 @@
                 </form>
 
     </div>
+
     <div>
 
      <form class="crawl" method='get' action="{% url 'crawl' %}">
