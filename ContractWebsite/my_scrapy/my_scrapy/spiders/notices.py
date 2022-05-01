@@ -15,6 +15,8 @@ django.setup()
 
 
 from ContractWebsite.first.models import Notice as N
+from ContractWebsite.visual.models import DateModel
+
 
 
 
@@ -252,12 +254,27 @@ class NoticeSpider(scrapy.Spider):
 
     }
     def parse(self,response,**kwargs):
+        last_time_request=DateModel.objects.all().last()
+
+        # PAYLOAD={
+        #     "sysNoticeTypeIds": [],
+        #     "sortProperties": [],
+        #     "pageSize": 100,
+        #     "hasUnansweredQuestions": False,
+        #     "pageIndex": 0
+        # }
         PAYLOAD={
-            "sysNoticeTypeIds": [],
-            "sortProperties": [],
-            "pageSize": 100,
-            "hasUnansweredQuestions": False,
-            "pageIndex": 0
+            {
+                "sysNoticeTypeIds": [],
+                "sortProperties": [],
+                "pageSize": 5,
+                "hasUnansweredQuestions": False,
+                "startPublicationDate": "2022-05-01T06:14:48.809Z",
+                "startTenderReceiptDeadline": f"{last_time_request.start_date}T06:14:48.810Z",
+                "sysProcedureStateId": 2,
+                "pageIndex": 0,
+                "endTenderReceiptDeadline": f"{last_time_request.end_date}T21:00:00.000Z"
+            }
         }
 
         request=scrapy.Request(url=' http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/',

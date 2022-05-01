@@ -8,6 +8,9 @@ from django import forms
 from django.contrib.auth import mixins as auth_mixin
 
 from scrapy.crawler import CrawlerProcess
+
+from ContractWebsite.visual.forms import SearchConditionForm
+from ContractWebsite.visual.models import DateModel
 from my_scrapy.my_scrapy.spiders.notices import TestSpider
 import platform as plt
 import os
@@ -19,8 +22,10 @@ import os
 
 
 
+
 # Create your views here.
 from ContractWebsite.first.models import Notice
+
 
 UserModel=get_user_model()
 
@@ -62,10 +67,30 @@ class CreateNewUserForm(auth_forms.UserCreationForm):
 class ViewPage(views.TemplateView):
     template_name = 'index_a.html'
 
-class LogedPage(views.TemplateView):
-
+class LogedPage(views.CreateView):
+    form_class = SearchConditionForm
     template_name = 'loged.html'
-    #url = reverse_lazy('logged')
+    context_object_name='form'
+    success_url = reverse_lazy('logged')
+
+    # last_user=DateModel.objects.all().last()
+    # print(last_user.end_date)
+    # here start scrapy
+
+
+
+
+    # #queryset = Notice.objects.all()
+    # def get_queryset(self):
+    #     filter_val = self.request.GET.get('filter')
+    #     new_context = Notice.objects.filter()
+    #     return new_context
+    # def get_context_data(self, **kwargs):
+    #     context = super(LogedPage, self).get_context_data(**kwargs)
+    #     context['form'] = self.request.GET.get('filter', 'give-default-value')
+    #     return context
+
+
 
 class AdminsPage(auth_mixin.LoginRequiredMixin,views.TemplateView):
     template_name = 'admins.html'
@@ -116,4 +141,8 @@ def my_crawl_scrapy(request):
     print('start scrapy function')
     cwd = os.path.join("C:\\Users\\Owner\\Desktop\\Test-Website\\Contract-notices-website\\ContractWebsite\\my_scrapy\\my_scrapy", "start.py")
     os.system('{} {}'.format('python', cwd))
-    return redirect('admins')
+    return redirect('logged')
+
+
+
+

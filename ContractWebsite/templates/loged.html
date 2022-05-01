@@ -13,16 +13,36 @@
         </form>
         </div>
     <h2>
-        Would like to enter my application?
+        Start searching Your result
     </h2>
 </div>
+
+    <div>
+
+     <form class="crawl" method='post' action="{% url 'logged' %}">
+                    {{ form.as_p }}
+                    <button class="back">1. Set date period </button>
+                    {% csrf_token %}
+                </form>
+
+    </div>
+    <div>
+
+     <form class="crawl" method='get' action="{% url 'crawl' %}">
+                    <button class="back">2. Crawl</button>
+                    {% csrf_token %}
+                </form>
+
+    </div>
 <div>
         <form class="app" method='get' action="{% url 'filter' %}">
-         <button class="regi"> To application</button>
+         <button class="regi">3. See the result</button>
             {% csrf_token %}
 
         </form>
     </div>
+
+
     {% if user.is_superuser %}
     <div>
 
