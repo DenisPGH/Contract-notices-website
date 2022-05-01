@@ -62,6 +62,14 @@
         </div>
     {% endif %}
 
+<div>
+        <form class="app" method='get' action="{% url 'openapi-schema' %}">
+         <button class="regi">JSON Schema</button>
+            {% csrf_token %}
+
+        </form>
+    </div>
+
 
 
 </body>

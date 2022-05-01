@@ -314,7 +314,6 @@ class TestSpider(scrapy.Spider):
         # and selecting the appropriate rule of Xpath
         Notice_all = response.xpath('//div/div/div/span[1]')
 
-        # These paths are based on the selectors
 
         for single_notice in Notice_all:  # extracting data
             data=[['2022-04-30'],['a'],[f"deni{random.randint(0,10)}"],["c"],['d'],['e'],[20],['g']]
@@ -329,7 +328,6 @@ class TestSpider(scrapy.Spider):
             items['estimated_value']=data[6]
 
             # if not in db django store it!!!!
-
             if data[2][0] not in N.objects.values_list('tender_name', flat=True).distinct():
                 new_notice = N(
                     date=data[0][0],

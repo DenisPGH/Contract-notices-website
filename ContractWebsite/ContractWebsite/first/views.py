@@ -21,12 +21,12 @@ from rest_framework.response import Response
 
 from ContractWebsite.first.models import Notice
 
-class MyDateFilter(filters_rest.filters.DateFilter):
-    date = filters_rest.DateFromToRangeFilter()
-
-
-    # class Meta:
-    #     model = Notice
+# class MyDateFilter(filters_rest.filters.DateFilter):
+#     date = filters_rest.DateFromToRangeFilter()
+#
+#
+#     # class Meta:
+#     #     model = Notice
     #     fields = ['id','date','tender_name']
 
 class SearchSerializer(serializers.ModelSerializer):
@@ -36,11 +36,11 @@ class SearchSerializer(serializers.ModelSerializer):
         fields = ('id','date','tender_name')
 
 
-class FormSearch(forms.ModelForm):
-
-    class Meta:
-        model=Notice
-        fields=('id','date','tender_name')
+# class FormSearch(forms.ModelForm):
+#
+#     class Meta:
+#         model=Notice
+#         fields=('id','date','tender_name')
 
 
 
@@ -130,6 +130,7 @@ class NoticeListView(api_views.ListAPIView):
 
 
 class ExampleView(APIView):
+    """authentication"""
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
