@@ -11,5 +11,4 @@ urlpatterns=(
         description="first steps in JSON schema",
         version="1.0.0"
     ), name='openapi-schema'),
-    #path('b/',AllNoticeView.as_view(),name="filter"),
 )

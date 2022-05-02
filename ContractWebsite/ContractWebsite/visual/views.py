@@ -6,53 +6,18 @@ from django.views import generic as views
 from django.contrib.auth import forms as auth_forms, get_user_model
 from django import forms
 from django.contrib.auth import mixins as auth_mixin
-
 from scrapy.crawler import CrawlerProcess
-
 from ContractWebsite.visual.forms import SearchConditionForm
 from ContractWebsite.visual.models import DateModel
 from my_scrapy.my_scrapy.spiders.notices import TestSpider
 import platform as plt
 import os
-
-
-
-# Create your views here.
 from ContractWebsite.first.models import Notice
 
 
 UserModel=get_user_model()
 
 class CreateNewUserForm(auth_forms.UserCreationForm):
-
-    # first_name = forms.CharField(max_length=25, )
-    # last_name = forms.CharField(max_length=30)
-    # email = forms.EmailField(
-    #     Null=True,
-    # )
-    #
-    #
-    # def save(self, commit=True):
-    #     user = super().save(commit=commit)
-    #     profile = Profile(
-    #         first_name=self.cleaned_data['first_name'],
-    #         last_name=self.cleaned_data['last_name'],
-    #         picture=self.cleaned_data['picture'],
-    #         born=self.cleaned_data['born'],
-    #         user=user,
-    #     )
-    #
-    #     if commit:
-    #         profile.save()
-    #         wait_user = WaitingUser(
-    #             first_name=self.cleaned_data['first_name'],
-    #             last_name=self.cleaned_data['last_name'],
-    #             id=profile.pk,
-    #
-    #         )
-    #         wait_user.save()
-    #     return user
-
     class Meta:
         model = UserModel
         fields = ('username','first_name', 'last_name','password1', 'password2', )
@@ -67,22 +32,6 @@ class LogedPage(views.CreateView):
     context_object_name='form'
     success_url = reverse_lazy('logged')
 
-    # last_user=DateModel.objects.all().last()
-    # print(last_user.end_date)
-    # here start scrapy
-
-
-
-
-    # #queryset = Notice.objects.all()
-    # def get_queryset(self):
-    #     filter_val = self.request.GET.get('filter')
-    #     new_context = Notice.objects.filter()
-    #     return new_context
-    # def get_context_data(self, **kwargs):
-    #     context = super(LogedPage, self).get_context_data(**kwargs)
-    #     context['form'] = self.request.GET.get('filter', 'give-default-value')
-    #     return context
 
 
 
@@ -122,9 +71,9 @@ def delete_user(request,pk):
     user_for_delete.delete()
     return redirect('admins')
 
+
 class Back(auth_mixin.LoginRequiredMixin,views.TemplateView):
     template_name = 'index_a.html'
-    #url = reverse_lazy('admins')
 
 
 def my_crawl_scrapy(request):

@@ -21,35 +21,15 @@ from rest_framework.response import Response
 
 from ContractWebsite.first.models import Notice
 
-# class MyDateFilter(filters_rest.filters.DateFilter):
-#     date = filters_rest.DateFromToRangeFilter()
-#
-#
-#     # class Meta:
-#     #     model = Notice
-    #     fields = ['id','date','tender_name']
-
-class SearchSerializer(serializers.ModelSerializer):
-    date = serializers.DateTimeField()
-    class Meta:
-        model = Notice
-        fields = ('id','date','tender_name')
-
-
-# class FormSearch(forms.ModelForm):
-#
-#     class Meta:
-#         model=Notice
-#         fields=('id','date','tender_name')
-
-
 
 class InfoOneNoticeSerializer(serializers.ModelSerializer):
     """show the date from the db"""
-
     class Meta:
         model = Notice
         fields = '__all__'
+
+
+
 class MyFilterSet(filters_rest.FilterSet):
     date = filters_rest.DateFilter(
         #distinct= DatePickerInput()
@@ -59,11 +39,7 @@ class MyFilterSet(filters_rest.FilterSet):
         model = Notice
         fields = ('id', 'date', 'tender_name')
 
-    # def get_form_class(self):
-    #     # widgets = {
-    #     #     'date': DatePickerInput(),
-    #     # }
-    #     return forms
+
 
 
 class AllNoticeView(APIView):
@@ -93,23 +69,14 @@ class AllNoticeView(APIView):
         return Response({'notices': query,
                          'filters':MyFilterSet})
 
-    # def get(self, request, format=None):
-    #     """
-    #     Return a list of all users.
-    #     """
-    #     notice = [simple.tender_name for simple in Notice.objects.all()]
-    #     return Response(notice)
+
 
 
 class NoticeListView(api_views.ListAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
     )
-    #queryset = Notice.objects.all()
-    # filter_backends = [filters.SearchFilter]
-    # search_fields = ['tender_name','id','date']
-    # filterset_fields=['tender_name','id','date']
-    # filterset_fields=SearchSerializer
+
     serializer_class = InfoOneNoticeSerializer
     filter_backends = [filters_rest.DjangoFilterBackend]
     filterset_class=MyFilterSet
