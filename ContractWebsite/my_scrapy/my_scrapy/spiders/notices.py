@@ -17,6 +17,9 @@ django.setup()
 from ContractWebsite.first.models import Notice as N
 from ContractWebsite.visual.models import DateModel
 from chompjs import chompjs
+import js2xml
+import lxml.etree
+from parsel import Selector
 
 class TestSpider(scrapy.Spider):
     """ Test spider for crawling from test url"""
@@ -122,7 +125,7 @@ class NoticeSpider(scrapy.Spider):
         # data=chompjs.parse(javascript)
         # print(f"====DATA==={data}")
         print(f"SCTIPT TEXT====={response.css('script::text').re(pattern)}")
-        #print(f"STATUS====={response.status}")
+        #print(f"DECODE====={response.body.decode(response.encoding)}")
         #print(f"===META====={response.meta}")
         #print(f"===CB====={response.cb_kwargs}")
         #print(f"===HEADERS====={response.headers}")
@@ -131,6 +134,12 @@ class NoticeSpider(scrapy.Spider):
         #print(f"===protocol====={response.protocol}")
         #print(f"===BODY====={response.text}")
         #print(f"PROBE TIME PRINT ======  {PAYLOAD['startTenderReceiptDeadline']}")
+        javascript = response.css('script::text').get()
+        xml = lxml.etree.tostring(js2xml.parse(javascript), encoding='unicode')
+        selector = Selector(text=xml)
+        for_print=selector.css('var[name="base"]').get()
+        print(f"====JS2XML===={for_print}")
+        print(f"====XML===={str(xml)}")
 
 
 
