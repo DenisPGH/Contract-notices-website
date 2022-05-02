@@ -61,7 +61,7 @@ class NoticeSpider(scrapy.Spider):
     name = "notices"
     start_urls = ["http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1"]
     #start_urls = [" http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/"]
-    hheaders = {
+    headers_others = {
         'Accept': 'application/json, text/plain, */*',
         'Accept-Encoding': 'gzip, deflate',
         'Accept-Language': 'en-US,en;q=0.9',
@@ -80,20 +80,12 @@ class NoticeSpider(scrapy.Spider):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
     }
     headers = {
-        #'Content-Type': 'application/json; charset=UTF-8',
-        'Content-Type': 'application/x-www-form-urlencoded',
-
+        'Content-Type': 'application/json; charset=UTF-8',
+        #'Content-Type': 'application/x-www-form-urlencoded',
     }
     def parse(self,response,**kwargs):
         last_time_request=DateModel.objects.all().last() # got the last gived data period for using in crawl
 
-        # PAYLOAD={
-        #     "sysNoticeTypeIds": [],
-        #     "sortProperties": [],
-        #     "pageSize": 100,
-        #     "hasUnansweredQuestions": False,
-        #     "pageIndex": 0
-        # }
         PAYLOAD={
                 "sysNoticeTypeIds": [],
                 "sortProperties": [],
@@ -124,7 +116,7 @@ class NoticeSpider(scrapy.Spider):
         # data = chompjs.parse_js_object(javascript)
         # data=chompjs.parse(javascript)
         # print(f"====DATA==={data}")
-        print(f"SCTIPT TEXT====={response.css('script::text').re(pattern)}")
+        print(f"SCTIPT TEXT====={response.css('script::text')}")
         #print(f"DECODE====={response.body.decode(response.encoding)}")
         #print(f"===META====={response.meta}")
         #print(f"===CB====={response.cb_kwargs}")
@@ -134,12 +126,15 @@ class NoticeSpider(scrapy.Spider):
         #print(f"===protocol====={response.protocol}")
         #print(f"===BODY====={response.text}")
         #print(f"PROBE TIME PRINT ======  {PAYLOAD['startTenderReceiptDeadline']}")
-        javascript = response.css('script::text').get()
+        patt=r'property name="eurLexEuropaLink"'
+        javascript = response.css('script::text').get(patt)
+        #javascript = response.css('#container-sizing > script:nth-child(4)').get()
+        #javascript = response.xpath('//*[@id="container-sizing"]/script[2]').get()
         xml = lxml.etree.tostring(js2xml.parse(javascript), encoding='unicode')
         selector = Selector(text=xml)
-        for_print=selector.css('var[name="base"]').get()
-        print(f"====JS2XML===={for_print}")
-        print(f"====XML===={str(xml)}")
+        # for_print=selector.css('name="config"').get()
+        # print(f"====JS2XML===={for_print}")
+        print(f"====XML===={xml}")
 
 
 
