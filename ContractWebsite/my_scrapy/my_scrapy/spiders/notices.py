@@ -58,6 +58,10 @@ class TestSpider(scrapy.Spider):
 
 
 class NoticeSpider(scrapy.Spider):
+    """
+    this should be main spider,
+    but couldn't find the right solution for crawling the items from the website
+    """
     name = "notices"
     start_urls = ["http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1"]
     #start_urls = [" http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/"]

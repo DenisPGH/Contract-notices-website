@@ -26,7 +26,7 @@ class CreateNewUserForm(auth_forms.UserCreationForm):
 class ViewPage(views.TemplateView):
     template_name = 'index_a.html'
 
-class LogedPage(views.CreateView):
+class LogedPage(auth_mixin.LoginRequiredMixin,views.CreateView):
     form_class = SearchConditionForm
     template_name = 'loged.html'
     context_object_name='form'
@@ -72,7 +72,7 @@ def delete_user(request,pk):
     return redirect('admins')
 
 
-class Back(auth_mixin.LoginRequiredMixin,views.TemplateView):
+class Back(views.TemplateView):
     template_name = 'index_a.html'
 
 
