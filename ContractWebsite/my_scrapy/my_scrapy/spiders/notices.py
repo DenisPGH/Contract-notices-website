@@ -1,5 +1,6 @@
 import json
 import random
+import re
 
 import scrapy
 from  scrapy import FormRequest
@@ -15,82 +16,7 @@ django.setup()
 
 from ContractWebsite.first.models import Notice as N
 from ContractWebsite.visual.models import DateModel
-
-
-class NoticeSpider(scrapy.Spider):
-    name = "notices"
-    start_urls = ["http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1"]
-    #start_urls = [" http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/"]
-    hheaders = {
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Encoding': 'gzip, deflate',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Authorization': 'Bearer null',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-        'Content-Length': '101',
-        'Content-Type': 'application/json;charset=UTF-8',
-        'Cookie': 'culture=en-US; isCompact=true; _HttpSessionID=5BF1B10EBD394BD8B5B99ED472BD854E; sysNoticeTypeIds=null',
-        'Culture': 'en-US',
-        'Host': 'www.e-licitatie.ro',
-        'HttpSessionID': 'null',
-        'Origin': 'http://www.e-licitatie.ro',
-        'Pragma': 'no-cache',
-        'Referer': 'http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1RefreshToken: null',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
-    }
-    headers = {
-        #'Content-Type': 'application/json; charset=UTF-8',
-        'Content-Type': 'application/x-www-form-urlencoded',
-
-    }
-    def parse(self,response,**kwargs):
-        last_time_request=DateModel.objects.all().last() # got the last gived data period for use in crawl
-
-        # PAYLOAD={
-        #     "sysNoticeTypeIds": [],
-        #     "sortProperties": [],
-        #     "pageSize": 100,
-        #     "hasUnansweredQuestions": False,
-        #     "pageIndex": 0
-        # }
-        PAYLOAD={
-            {
-                "sysNoticeTypeIds": [],
-                "sortProperties": [],
-                "pageSize": 5,
-                "hasUnansweredQuestions": False,
-                "startPublicationDate": "2022-05-01T06:14:48.809Z",
-                "startTenderReceiptDeadline": f"{last_time_request.start_date}T06:14:48.810Z",
-                "sysProcedureStateId": 2,
-                "pageIndex": 0,
-                "endTenderReceiptDeadline": f"{last_time_request.end_date}T21:00:00.000Z"
-            }
-        }
-
-        request=scrapy.Request(url=' http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/',
-                       method='POST',
-                       callback=self.parse,
-                       headers=self.headers,
-                       body=json.dumps(PAYLOAD),
-                       )
-
-
-        print(f"Content type====={response.headers.getlist('Content-Type')}")
-        print(f"CSS====={response.css('.ng-binding')}")
-        print(f"STATUS====={response.status}")
-        print(f"===META====={response.meta}")
-        print(f"===CB====={response.cb_kwargs}")
-        print(f"===HEADERS====={response.headers}")
-        print(f"===FLAGS====={response.flags}")
-        print(f"===URL====={response.url}")
-        print(f"===protocol====={response.protocol}")
-        print(f"===BODY====={response.text}")
-
-
-
-
-
+from chompjs import chompjs
 
 class TestSpider(scrapy.Spider):
     """ Test spider for crawling from test url"""
@@ -124,6 +50,94 @@ class TestSpider(scrapy.Spider):
                 )
                 new_notice.save()
             yield items
+
+
+
+
+class NoticeSpider(scrapy.Spider):
+    name = "notices"
+    start_urls = ["http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1"]
+    #start_urls = [" http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/"]
+    hheaders = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Authorization': 'Bearer null',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Content-Length': '101',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Cookie': 'culture=en-US; isCompact=true; _HttpSessionID=5BF1B10EBD394BD8B5B99ED472BD854E; sysNoticeTypeIds=null',
+        'Culture': 'en-US',
+        'Host': 'www.e-licitatie.ro',
+        'HttpSessionID': 'null',
+        'Origin': 'http://www.e-licitatie.ro',
+        'Pragma': 'no-cache',
+        'Referer': 'http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1RefreshToken: null',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
+    }
+    headers = {
+        #'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/x-www-form-urlencoded',
+
+    }
+    def parse(self,response,**kwargs):
+        last_time_request=DateModel.objects.all().last() # got the last gived data period for using in crawl
+
+        # PAYLOAD={
+        #     "sysNoticeTypeIds": [],
+        #     "sortProperties": [],
+        #     "pageSize": 100,
+        #     "hasUnansweredQuestions": False,
+        #     "pageIndex": 0
+        # }
+        PAYLOAD={
+                "sysNoticeTypeIds": [],
+                "sortProperties": [],
+                "pageSize": 5,
+                "hasUnansweredQuestions": False,
+                "startPublicationDate": "2022-05-01T06:14:48.809Z",
+                "startTenderReceiptDeadline": f"{str(last_time_request.start_date)}T06:14:48.810Z",
+                "sysProcedureStateId": 2,
+                "pageIndex": 0,
+                "endTenderReceiptDeadline": f"{str(last_time_request.end_date)}T21:00:00.000Z"
+        }
+
+        request=scrapy.Request(url=' http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/',
+                       method='POST',
+                       callback=self.parse,
+                       headers=self.headers,
+                       body=json.dumps(PAYLOAD),
+                       )
+
+
+        #print(f"Content type====={response.headers.getlist('Content-Type')}")
+        #print(f"CSS====={response.css('.ng-binding')}")
+        pattern = r"data="
+        print(f"SCTIPT 1====={response.css('script')}")
+        print(f"XPATH====={response.xpath('script').re(pattern)}")
+        # javascript=response.css('script').get()
+        # print(f"SCTIPT GET====={response.css('script').get()}")
+        # data = chompjs.parse_js_object(javascript)
+        # data=chompjs.parse(javascript)
+        # print(f"====DATA==={data}")
+        print(f"SCTIPT TEXT====={response.css('script::text').re(pattern)}")
+        #print(f"STATUS====={response.status}")
+        #print(f"===META====={response.meta}")
+        #print(f"===CB====={response.cb_kwargs}")
+        #print(f"===HEADERS====={response.headers}")
+        #print(f"===FLAGS====={response.flags}")
+        #print(f"===URL====={response.url}")
+        #print(f"===protocol====={response.protocol}")
+        #print(f"===BODY====={response.text}")
+        #print(f"PROBE TIME PRINT ======  {PAYLOAD['startTenderReceiptDeadline']}")
+
+
+
+
+
+
+
 
 
 
