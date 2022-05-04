@@ -10,5 +10,3 @@ Admins can also edit all registered users and can delete them, if it needed.All 
 
 The application is based on DJango framework, DJango REST framework and for crawling is used Scrapy.All crawled data are stored in the datebase of  the application, in 
 this case it is sqlite.
-
-(It is not finished, still have to work on crawling condition, for collect right data, for now it is using test website=> https://quotes.toscrape.com .)
