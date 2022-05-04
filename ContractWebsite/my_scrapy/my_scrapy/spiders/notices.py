@@ -115,12 +115,13 @@ class NoticeSpider(scrapy.Spider):
                 2,
             ],
             'sortProperties': [],
-            'pageSize': 5,
+            'pageSize': 100,
             'hasUnansweredQuestions': False,
-            'startPublicationDate': f'2022-04-04T14:01:43.389Z',
-            'startTenderReceiptDeadline': f'2022-05-04T14:01:43.389Z',
+            'startPublicationDate': f'{str(last_time_request.start_date)}T14:01:43.389Z',
+            'startTenderReceiptDeadline': f'{str(last_time_request.end_date)}T14:01:43.389Z',
             'sysProcedureStateId': 2,
             'pageIndex': 0,
+            "endTenderReceiptDeadline": f"{str(last_time_request.end_date)}T21:00:00.000Z"
         }
 
         # request=scrapy.Request(url=' http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/',
@@ -138,7 +139,19 @@ class NoticeSpider(scrapy.Spider):
         # with open('json_test.json','w') as read:
         #     data=json.dumps(data)
         #     read.write(data)
-        print(data)
+        print(f"======={data['items'][0]['cNoticeId']}")
+        for each_items in range(len(data['items'])):
+            if data['items'][each_items]["contractingAuthorityNameAndFN"] not in N.objects.values_list('tender_name', flat=True).distinct():
+                new_notice = N(
+                    date=data['items'][each_items]["noticeStateDate"].split('T')[0],
+                    notice_number=data['items'][each_items]['noticeNo'],
+                    tender_name=data['items'][each_items]["contractingAuthorityNameAndFN"],
+                    procedure_state=data['items'][each_items]["sysProcedureState"]["text"],
+                    contract_type=data['items'][each_items]["sysAcquisitionContractType"]["text"],
+                    type_of_procurement=data['items'][each_items]["sysProcedureType"]["text"],
+                    estimated_value=float(data['items'][each_items]["estimatedValueExport"].split(" ")[0].split(',')[0]),
+                )
+                new_notice.save()
 
         # yield {
         #
